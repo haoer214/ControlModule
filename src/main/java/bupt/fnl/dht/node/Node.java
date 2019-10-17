@@ -1,3 +1,5 @@
+package bupt.fnl.dht.node;
+
 import java.io.Serializable;
 
 public class Node implements Serializable {
