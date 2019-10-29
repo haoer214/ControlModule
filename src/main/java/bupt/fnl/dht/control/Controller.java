@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Controller {
 
-    private static List<Node> nodeList = new LinkedList<>();
+    public static List<Node> nodeList = new LinkedList<>();
 
     public static void main(String[] args) throws Exception {
 
@@ -39,12 +39,16 @@ public class Controller {
         int myPort = 30000;
         System.out.println("本节点Port: " + myPort);
 
-        Message result = makeConnectionByObject(args[0],args[1],message0);
+        Controller.transfer("10.108.146.88","2050",message0);
+    }
+
+    public static void transfer(String ip, String port, Message message) throws Exception {
+        Message result = makeConnectionByObject(ip,port,message);
         switch (result.getType()) {
             // 获取节点信息
             case "getNodeList":
                 nodeList = Arrays.asList(result.getNodeList());
-                printNodeInfo();
+                printNodeInfo(nodeList);
                 System.out.println(result.getFeedback());
                 break;
             // 增
@@ -65,7 +69,7 @@ public class Controller {
         }
     }
 
-    private static Message makeConnectionByObject(String ip, String port, Message message) throws Exception {
+    public static Message makeConnectionByObject(String ip, String port, Message message) throws Exception {
 
         try(
                 Socket sendingSocket = new Socket(ip,Integer.parseInt(port));
@@ -79,7 +83,7 @@ public class Controller {
             }
     }
 
-    private synchronized static void printNodeInfo(){
+    public synchronized static void printNodeInfo(List<Node> nodeList){
         Iterator<Node> iterator = nodeList.iterator();
         String string;
         System.out.println("*****节点列表*****");
